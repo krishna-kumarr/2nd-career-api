@@ -1,27 +1,122 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CardWithImage from "../../components/Cards/CardWithImage";
 import { FaDownload } from "react-icons/fa";
 
 import Image from '../../utils/images.js'
 import DashboardNavbar from "../../components/Navbar/DashboardNavbar.jsx";
+import axios from 'axios';
 
 
 const LearningPage = () => {
     const professionalPageDashboardMenu = ['Home', 'Learning', 'Community']
+
+    const [learningData, setLearningData] = useState([])
+    const[learningLoading,setlearningLoading] = useState(false)
+    const [modalApiContent, setModalApiContent] = useState([])
+
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNzEyOTAxNjA1LCJqdGkiOiIyNDgxMDFjMS1jZDc4LTRmY2YtOGY1MC01NTEwMTIxNGQ5YTAiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoic2l2YXBlcnNvbmFsMTIxMkBnbWFpbC5jb20iLCJuYmYiOjE3MTI5MDE2MDUsImNzcmYiOiIwMTQyNGEwYy0zMzBmLTRjZDItOWNiZi1iYzVlZWJiYWQ2YjgiLCJleHAiOjE3MTI5ODgwMDV9.A1zVfHFGv3txvswLR6SeReCWmI9ZxjtgbX4sDYwwzLk"
+
+
+    const getModalData = async () => {
+        
+        try {
+          await axios.post("http://10.10.24.2:5002/get_detailed_description_learning", { id: 1 },
+            {
+              headers: {
+                authorization: `Bearer ${token}`
+              }
+            }
+          ).then((response) => {
+            console.log(response.data)
+            // console.log(response.data.data[0])
+            setModalApiContent(response.data.data[0].detailed_description)
+          })
+        } catch (err) {
+          console.log(err)
+        }
+    
+      }
+
+    useEffect(() => {
+        const getlearningDatas = async () => {
+
+            try {
+                setlearningLoading(true)
+
+                await axios({
+                    method: "post",
+                    url: "http://10.10.24.2:5002/professional_learning",
+                    headers: {
+                        authorization: `Bearer ${token}`
+                    }
+                })
+                    .then((response) => {
+                        setlearningLoading(false)
+                        console.log(response.data.data)
+                        // console.log(response.data.data[1].image)
+                        // modal api hit
+                        getModalData();
+                        // modal api hit
+
+                        if (response.data.error_code === 0) {
+                            setLearningData(response.data.data)
+                        }
+                    })
+                    .catch((err) => console.log(err))
+                
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        (async () => getlearningDatas())();
+    }, [])
+
     return (
         <>
             <DashboardNavbar profileImage="https://github.com/mdo.png" profileName="George Martin" dashboadMenus={professionalPageDashboardMenu} />
 
             <div className="learning-page-height learning-page-bg overflow-scroll">
                 <div className="container pt-5">
-                    <div className="row row-cols-1 row-cols-md-3 g-4 mt-0 mb-4">
-                        <div className="col">
-                            <CardWithImage cardImage={Image.learningImage}
-                                cardTitle="Learning"
+                    <div className="row row-cols-1 row-cols-md-3 mt-0 mb-4">
+                        
+
+                            {learningData.map((value,index) => {
+                                return (
+                                   
+                                    <React.Fragment>
+                                        {learningLoading ? 
+                                    <div className="col">
+                                            <CardWithImage cardImage={Image.learningImage}
+                                        cardTitle="hello"
+                                        cardTitleStyle="learningTitle placeholder"
+                                        imageClassName="rounded-4 img-fluid learning-img-height"
+                                        cardText={value.short_description}
+                                        cardKey={index}
+                                        cardParaTestId="professionalTestId"
+                                        cardButtonTestId="cardButton"
+                                        role="learningAndCommunity"
+                                        firstButton_Name="Download"
+                                        secondButton_Name="Learn"
+                                        icon={<FaDownload className="me-2" />}
+                                        firstCardColor="outline-secondary"
+                                        secondCardColor="brand-color"
+                                            
+                                        leftLearnUrl={value.image}
+                                        rightLearnUrl={value.url}
+                                   /> 
+                                   { modalApiContent.map((val,ind)=>{
+                                        <CardWithImage key={ind} modalContent={val}/>
+                                    })}
+                                    </div> 
+                                    :  
+                                    <div className="col">
+                                    <CardWithImage cardImage={Image.learningImage}
+                                cardTitle={value.title}
                                 cardTitleStyle="learningTitle"
                                 imageClassName="rounded-4 img-fluid learning-img-height"
-                                cardText="Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora, eveniet. Asperiores itaque quisquam exercitationem praesentium laboriosam culpa, ab beatae facere esse. Dolores dicta tempore "
-                                carTextClassName="role-selection-description"
+                                cardText={value.short_description}
+                                cardKey={index}
                                 cardParaTestId="professionalTestId"
                                 cardButtonTestId="cardButton"
                                 role="learningAndCommunity"
@@ -30,17 +125,25 @@ const LearningPage = () => {
                                 icon={<FaDownload className="me-2" />}
                                 firstCardColor="outline-secondary"
                                 secondCardColor="brand-color"
-                                modalContent="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, amet perferendis! Aliquid dignissimos sed hic ex eos, nesciunt provident illo impedit quidem exercitationem saepe? Beatae exercitationem soluta recusandae explicabo commodi iure consequatur est. Dolorum quam ratione mollitia labore temporibus cumque, tempore saepe esse, distinctio architecto rem illum error accusamus, ipsum repellat exercitationem provident dolore sint. Consequuntur, odit minus. Perferendis commodi nisi excepturi delectus beatae veniam animi rerum? Dolorum blanditiis placeat tenetur, eveniet temporibus similique sapiente nemo, a hic, nobis suscipit cum autem quisquam eligendi porro modi. Numquam, aperiam! Veritatis fugiat consectetur deleniti eveniet alias expedita cum delectus quam hic quaerat voluptate voluptas atque commodi aspernatur repudiandae ea dolorem, necessitatibus doloribus, corporis perspiciatis tenetur iste? Esse libero quam recusandae quas ad. Non sunt, nobis minus enim quis voluptatibus aperiam ut ad exercitationem dignissimos tenetur cupiditate doloribus harum, laudantium cum maxime optio id. Consequuntur consequatur atque ea asperiores excepturi nisi accusantium a optio explicabo ipsam omnis, labore, consectetur blanditiis doloremque, magni quasi perspiciatis fugiat natus doloribus sit. Dolor vero reprehenderit culpa rem officia voluptatum molestias cumque enim, est nemo aperiam libero tempore consequuntur officiis adipisci iste aspernatur eum possimus eos provident praesentium repellat temporibus voluptas unde. Necessitatibus enim laborum nisi temporibus quia architecto eveniet distinctio. Qui sit delectus cumque alias! Quibusdam consequuntur eius dicta! Velit distinctio libero culpa dolore assumenda doloremque voluptas officiis recusandae numquam, expedita adipisci nobis. Reiciendis rerum eligendi minima deleniti quaerat, atque officia porro! Doloremque officia odio laboriosam debitis veritatis quasi id, ea nulla. Suscipit, recusandae nobis nihil quia esse asperiores ullam velit aut iure amet perspiciatis nostrum nisi reprehenderit cum consequatur necessitatibus saepe, voluptate voluptatum commodi ratione? Iure ipsam eaque, cupiditate nesciunt sed aliquam vel eos odit reiciendis provident ut mollitia explicabo. Vel molestias facilis atque sunt earum animi consequuntur, repudiandae dignissimos quis enim ex sint excepturi officia?"
-                            />
-                        </div>
+                                modalContent={modalApiContent}
+                                leftLearnUrl={value.image}
+                                rightLearnUrl={value.url}
+                            /> 
+                            </div> }
+                                    </React.Fragment>
+
+                                  )
+                            }
+                            )}
                         
 
-                        <div className="col">
+
+                        {/* <div className="col">
                             <CardWithImage cardImage={Image.learningTwo}
-                                cardTitle="Learning"
+                                cardTitle="hello"
                                 cardTitleStyle="learningTitle"
                                 imageClassName="rounded-4 img-fluid learning-img-height"
-                                cardText="Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora, eveniet. Asperiores itaque quisquam exercitationem praesentium laboriosam culpa, ab beatae facere esse. Dolores dicta tempore "
+                                cardText="content"
 
                                 carTextClassName="role-selection-description"
                                 cardParaTestId="professionalTestId"
@@ -53,14 +156,14 @@ const LearningPage = () => {
                                 secondCardColor="brand-color learning"
                             />
 
-                        </div>
+                        </div> */}
 
-                        <div className="col">
+                        {/* <div className="col">
                             <CardWithImage cardImage={Image.learningThree}
-                                cardTitle="Learning"
+                                cardTitle={title}
                                 cardTitleStyle="learningTitle"
                                 imageClassName="rounded-4 img-fluid learning-img-height"
-                                cardText="Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora, eveniet. Asperiores itaque quisquam exercitationem praesentium laboriosam culpa, ab beatae facere esse. Dolores dicta tempore "
+                                cardText={description}
                                 carTextClassName="role-selection-description"
                                 cardParaTestId="professionalTestId"
                                 cardButtonTestId="cardButton"
@@ -71,14 +174,14 @@ const LearningPage = () => {
                                 firstCardColor="outline-secondary"
                                 secondCardColor="brand-color" />
 
-                        </div>
-
+                        </div> */}
+                        {/* 
                         <div className="col">
                             <CardWithImage cardImage={Image.learningImage}
-                                cardTitle="Learning"
+                                cardTitle={title}
                                 cardTitleStyle="learningTitle"
                                 imageClassName="rounded-4 img-fluid learning-img-height"
-                                cardText="Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora, eveniet. Asperiores itaque quisquam exercitationem praesentium laboriosam culpa, ab beatae facere esse. Dolores dicta tempore "
+                                cardText={description}
                                 carTextClassName="role-selection-description"
                                 cardParaTestId="professionalTestId"
                                 cardButtonTestId="cardButton"
@@ -88,17 +191,17 @@ const LearningPage = () => {
                                 icon={<FaDownload className="me-2" />}
                                 firstCardColor="outline-secondary"
                                 secondCardColor="brand-color"
-                                
-                            />
-                        </div>
-                        
 
-                        <div className="col">
+                            />
+                        </div> */}
+
+
+                        {/* <div className="col">
                             <CardWithImage cardImage={Image.learningTwo}
-                                cardTitle="Learning"
+                                cardTitle={title}
                                 cardTitleStyle="learningTitle"
                                 imageClassName="rounded-4 img-fluid learning-img-height"
-                                cardText="Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora, eveniet. Asperiores itaque quisquam exercitationem praesentium laboriosam culpa, ab beatae facere esse. Dolores dicta tempore "
+                                cardText={description}
 
                                 carTextClassName="role-selection-description"
                                 cardParaTestId="professionalTestId"
@@ -111,14 +214,14 @@ const LearningPage = () => {
                                 secondCardColor="brand-color learning"
                             />
 
-                        </div>
+                        </div> */}
 
-                        <div className="col">
+                        {/* <div className="col">
                             <CardWithImage cardImage={Image.learningThree}
-                                cardTitle="Learning"
+                                cardTitle={title}
                                 cardTitleStyle="learningTitle"
                                 imageClassName="rounded-4 img-fluid learning-img-height"
-                                cardText="Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora, eveniet. Asperiores itaque quisquam exercitationem praesentium laboriosam culpa, ab beatae facere esse. Dolores dicta tempore "
+                                cardText={description}
                                 carTextClassName="role-selection-description"
                                 cardParaTestId="professionalTestId"
                                 cardButtonTestId="cardButton"
@@ -129,7 +232,7 @@ const LearningPage = () => {
                                 firstCardColor="outline-secondary"
                                 secondCardColor="brand-color" />
 
-                        </div>
+                        </div> */}
 
 
                     </div>

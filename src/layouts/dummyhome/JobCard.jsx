@@ -1,15 +1,55 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import Logo from '../../assets/images/company.png'
-import { FaRegCalendarAlt, FaShoppingBag, FaWallet } from 'react-icons/fa'
+import { FaShoppingBag, FaWallet } from 'react-icons/fa'
 import { FaLocationDot } from "react-icons/fa6";
 import { IoTimeSharp } from "react-icons/io5";
+import CommonContext from '../../hooks/CommonContext';
+import axios from "axios";
+
+
+const JobCard = ({ cardId, cardDes, cardType, applicationStatus, cardHeading, cardPostedOn, cardWorkplace, cardState, cardSchedule, cardJobType, cardPayment }) => {
+
+  const { setSelectedCardData,setApplicationRequirements, setSelectedSkeleton, handleGetApplicationRequirements } = useContext(CommonContext);
 
 
 
-const JobCard = ({ cardType,applicationStatus,cardHeading,cardPostedOn,cardWorkplace,cardState,cardSchedule,cardJobType,cardPayment  }) => {
+  const handleSelectedCardData = async (cardId) => {
+    setSelectedCardData([])
+    setSelectedSkeleton(true)
+
+    const token = localStorage.getItem("Token")
+
+    let jobId = { job_id: cardId }
+    try {
+      await axios.post("http://10.10.24.7:5000/selected_job_details", jobId, {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      })
+        .then((res) => {
+          // console.log(res.data)
+          if (res.data.error_code === 0) {
+            console.log(res.data.data)
+            setSelectedCardData([res.data.data[2]])
+            setApplicationRequirements(res.data.data)
+            setSelectedSkeleton(false)
+          }
+          else if (res.data.error_code === 500) {
+            setSelectedSkeleton(false)
+          }
+        })
+        .catch((err) => console.log(err))
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
+
+
   return (
-    <>
-      <div className="d-flex align-items-center my-2">
+    <div onClick={() => handleSelectedCardData(cardId)}>
+      <div className="d-flex align-items-center my-2" >
         <div className="flex-shrink-0">
           <img src={Logo} alt="..." width={52} height={52} />
         </div>
@@ -85,8 +125,8 @@ const JobCard = ({ cardType,applicationStatus,cardHeading,cardPostedOn,cardWorkp
           {cardPayment}
         </label>
       </div>
-      <p className='mt-4 job-card-description'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora, eveniet. Asperiores itaque quisquam exercitationem praesentium laboriosam culpa, ab beatae facere esse. Dolores dicta tempore inventore nobis! Molestiae mollitia laboriosam accusamus eligendi </p>
-    </>
+      <p className='mt-4 job-card-description'>{cardDes}</p>
+    </div>
   )
 }
 

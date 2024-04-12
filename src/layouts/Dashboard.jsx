@@ -25,7 +25,7 @@ const Dashboard = () => {
   }, [])
 
   return (
-    <div ref={filterRef}>
+    <div ref={filterRef} className='placeholder-glow'>
       <section className='homePage-backgroundColor'>
         <FilterMethods />
         <JobWorkSpace/>

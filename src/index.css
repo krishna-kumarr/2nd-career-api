@@ -27,10 +27,12 @@ input[type="number"] {
 .signup-forms input {
   border-radius: 5px !important;
 }
+
 .signup-forms input[type="password"] {
   border-top-right-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
 }
+
 .signup-forms .input-group span {
   border-top-right-radius: 5px !important;
   border-bottom-right-radius: 5px !important;
@@ -120,7 +122,7 @@ input[type="number"] {
   background-color: #106d9f;
 }
 
-.login-form > .form-control {
+.login-form>.form-control {
   background-color: #f6f6f6;
   padding: 1.5rem 0.75rem !important;
 }
@@ -303,11 +305,12 @@ input.login-input:focus {
 
 
 /* input checkbox  */
-.form-check  {
+.form-check {
   display: flex;
   align-items: center;
   position: relative;
 }
+
 .form-check input[type='checkbox'] {
   cursor: pointer;
   opacity: 0;
@@ -326,21 +329,21 @@ input.login-input:focus {
 }
 
 .form-check label::before {
-    content: '';
-    width: 1.2em;
-    height: 1.2em;
-    border-radius: .15em;
-    margin-right: .5em;
-    border: .05em solid rgba(0, 0, 0, 0.144);
+  content: '';
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: .15em;
+  margin-right: .5em;
+  border: .05em solid rgba(0, 0, 0, 0.144);
 }
 
-.form-check input[type='checkbox']:checked + label::before {
-    content: '\002714';
-    background-color: #f58b0e;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
+.form-check input[type='checkbox']:checked+label::before {
+  content: '\002714';
+  background-color: #f58b0e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 /* newly added job card component(jobCard.jsx) css */
@@ -448,14 +451,30 @@ input.login-input:focus {
 :root {
   --nav-height: 4rem;
   --dashboard-menu: 5.5rem;
-  --homePage-mainContent-height: calc(
-    100vh - (var(--nav-height) + var(--dashboard-menu))
-  );
+  --homePage-mainContent-height: calc(100vh - (var(--nav-height) + var(--dashboard-menu)));
 }
 
 .navbar-height {
   height: var(--nav-height);
 }
+
+.placeholder {
+  opacity: .4;
+}
+
+@keyframes placeholder-glow{
+  50%{
+    opacity: .3;
+  }
+}
+
+.skeleton-jobParagraph{
+  padding: 3.5rem;
+}
+.skeleton-jobParagraph-medium{
+  padding: 5rem;
+}
+
 
 .bell-icon {
   cursor: pointer;
@@ -510,7 +529,9 @@ input.login-input:focus {
   width: 0px;
   height: 0px;
 }
-
+.dropdown-menu-left{
+  left: -24px !important;
+}
 .profile-bg {
   background-color: #f3f6f9;
 }
@@ -754,7 +775,7 @@ input.login-input:focus {
   /* visibility: hidden; */
 }
 
-input:invalid[focused="true"] ~ .professional-signup-error-message {
+input:invalid[focused="true"]~.professional-signup-error-message {
   display: block;
 }
 
@@ -816,7 +837,7 @@ input:invalid[focused="true"] ~ .professional-signup-error-message {
   outline: 0;
 }
 
-.user-form-group .form-control:not(:placeholder-shown) + label {
+.user-form-group .form-control:not(:placeholder-shown)+label {
   top: -0.5rem;
   font-size: 0.8rem;
   color: #6c757d;
@@ -853,10 +874,12 @@ input:invalid[focused="true"] ~ .professional-signup-error-message {
   letter-spacing: 0.2px;
   word-spacing: 2px;
 }
+
 .profile-descriptions .textarea {
   border: 1.5px solid #e3811268;
   border-radius: 5px;
 }
+
 .profile-descriptions .textarea:focus {
   border: 1.5px solid #e38212;
   outline: none;
@@ -987,6 +1010,7 @@ input:invalid[focused="true"] ~ .professional-signup-error-message {
   display: none;
   cursor: pointer;
 }
+
 between .custom-file-label::after {
   /* Hide the "No file chosen" text */
   display: none;
@@ -1074,15 +1098,15 @@ between .custom-file-label::after {
   transition: 0.4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: #e38212;
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px #e38212;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(11px);
   -ms-transform: translateX(11px);
   transform: translateX(11px);
@@ -1143,7 +1167,7 @@ input:checked + .slider:before {
 }
 
 .pic-holder:hover .upload-file-block,
-.uploadProfileInput:focus ~ .upload-file-block {
+.uploadProfileInput:focus~.upload-file-block {
   opacity: 1;
 }
 
@@ -1170,4 +1194,103 @@ input:checked + .slider:before {
 
 .learningTitle {
   font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* SK */
+/* learning & Community */
+.learning-img-height,
+.community-img-height {
+height: 13rem;
+}
+
+.learning:active {
+background-color: #e38212;
+}
+
+.card-text {
+color: #595959;
+font-size: 1rem;
+font-weight: 400;
+line-height: 1.7rem;
+letter-spacing: 0.2px;
+word-spacing: 2px;
+/* margin: 0 1rem; */
+}
+
+.learningTitle , .communityTitle {
+font-weight: 600;
+}
+
+/* Pricing Page */
+.pricing-plan{
+background-color: #f3f6f9;
+
+}
+.pricesubtitle{
+color: #595959;
+font-size: 0.9rem;
+}
+
+.cardCopyRight{
+font-size: 0.8rem;
+}
+
+.signUpFree{
+font-size: 0.8rem;
+}
+
+.pricing-icon{
+width: 2.4rem;
+}
+
+/* Home Page Share Button */
+
+a .whastapp-color{
+color: #25D366;
+}
+a .facebook-color{
+color: #4267B2;
+}
+a .linkedin-color{
+color: #1DA1F2;
+}
+a .telegram-color{
+color: #4ca7d4f7;
+}
+a .mail-color{
+color: #3b74e8;
+}
+
+.button-position{
+position: absolute;
+bottom: 69px;
+right: 20px;
+}
+
+.circle{
+border: 1px solid rgba(153, 153, 153, 0.403);
+height: 50px;
+width: 50px;
+border-radius: 50%;
+}
+.icon-position{
+position: relative;
+right: 2px;
+top: 0.2px;
+}
+
+.linkFieldSize{
+height: 3rem;
 }

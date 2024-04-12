@@ -14,6 +14,7 @@ import HomeAll from "./views/professional/HomeOptionsLayout/HomeAll";
 import HomeRecommended from "./views/professional/HomeOptionsLayout/HomeRecommended";
 import HomeApplied from "./views/professional/HomeOptionsLayout/HomeApplied";
 import HomeSaved from "./views/professional/HomeOptionsLayout/HomeSaved";
+import Pricing from "./views/common/Pricing"
 import { useContext } from "react";
 import CommonContext from "./hooks/CommonContext";
 
@@ -46,6 +47,9 @@ function App() {
       </Route>
 
       <Route path="/home/all/profile" element={<Profile/>}/>
+      <Route path="/pricing-plan" element={<Pricing/>}/>
+
+
 
       <Route path="/learning" element={<LearningPage/>}/>
       <Route path="/community" element={<CommunityPage/>}/>

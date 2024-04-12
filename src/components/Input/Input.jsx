@@ -27,7 +27,6 @@ const Input = ({ submitted,value,type, className,id ,placeHolder, formFieldName,
         pattern={pattern}
         role={role}
         alt={alt}
-        // value={value}
         onBlur={handleUnfocused}
         onFocus={() => name === "confirmPassword" && setUnfocused(true)}
         focused={submitted ? null: unfocused.toString()}

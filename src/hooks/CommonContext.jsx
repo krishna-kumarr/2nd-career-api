@@ -1,13 +1,49 @@
-import { Children, createContext, useState } from "react";
+import { createContext, useState } from "react";
+import axios from "axios";
+
 
 const CommonContext = createContext();
 
 export const DataProvider = ({ children }) => {
     // home page states 
+    const [gettingResponse, setGettingResponse] = useState(false)
     const [FilterArray, setFilterArray] = useState([]);
     const [cardArray, setCardArray] = useState([]);
-    const [selectedCardData, setSelectedCardData] = useState([])
-    const [homepageAxiosUrl,setHomePAgeAxiosUrl] = useState("http://10.10.24.2:5000/professional_dashboard")
+    const [userNavbarinfo, setUserNavinfo] = useState([]);
+    const [cardArrayDuplicate, setCardArrayDuplicate] = useState([]);
+    const [selectedCardData, setSelectedCardData] = useState([]);
+    const [selectedSkeleton, setSelectedSkeleton] = useState(false);
+    const [applicationRequirements, setApplicationRequirements] = useState([]);
+
+    const handleGetApplicationRequirements = async (value) => {
+        console.log(value)
+
+        let getRequirements = { job_id: value }
+        const token = localStorage.getItem("Token")
+        try {
+          await axios.post("http://10.10.24.7:5000/professional_onClick_apply_job", getRequirements, {
+            headers: {
+              authorization: `Bearer ${token}`
+            }
+          })
+            .then((res) => {
+              // console.log(res.data)
+              if(res.data.error_code === 0){
+                console.log(res.data.data)
+                setApplicationRequirements(res.data.data)
+                setGettingResponse(true)
+                setSelectedSkeleton(false)
+              }
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
+
 
     return (
         <CommonContext.Provider value={{
@@ -17,12 +53,21 @@ export const DataProvider = ({ children }) => {
             setFilterArray,
             selectedCardData,
             setSelectedCardData,
-            homepageAxiosUrl,
-            setHomePAgeAxiosUrl
+            gettingResponse,
+            setGettingResponse,
+            cardArrayDuplicate,
+            setCardArrayDuplicate,
+            selectedSkeleton,
+            setSelectedSkeleton,
+            userNavbarinfo,
+            setUserNavinfo,
+            applicationRequirements,
+            setApplicationRequirements,
+            handleGetApplicationRequirements
         }}
         >
 
-            
+
             {children}
         </CommonContext.Provider>
     )

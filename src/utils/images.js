@@ -13,6 +13,7 @@ const employer = require("../assets/images/employer.png")
 const learningImage = require("../assets/images/learningImage.jpg")
 const learningTwo = require("../assets/images/learningtwo.png")
 const learningThree = require("../assets/images/learningthree.jpg")
+const underline = require("../assets/images/underline.png")
 
 
 export default {
@@ -30,5 +31,6 @@ export default {
     employer,
     learningImage,
     learningTwo,
-    learningThree
+    learningThree,
+    underline
 }

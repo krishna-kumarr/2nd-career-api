@@ -20,7 +20,7 @@ const HomeRecommended = () => {
             try {
                 await axios({
                     method: "get",
-                    url: "http://10.10.24.7:5000/professional_dashboard",
+                    url: "http://secondcareers.adraproductstudio.com:5000/professional_dashboard",
                     headers: {
                         authorization: `Bearer ${token}`
                     }

@@ -9,7 +9,7 @@ const Home = () => {
     return (
         <>
             <DashboardNavbar profileImage="https://github.com/mdo.png" profileName="George Martin" dashboadMenus={professionalPageDashboardMenu} />
-
+            
             <Dashboard />
         </>
     )

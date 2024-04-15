@@ -5,6 +5,7 @@ import { FiFilter } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import HomeFilterForm from '../components/Forms/HomeFilterForm';
 
+
 const Dashboard = () => {
 
   const [open, setOpen] = useState(false);
@@ -26,6 +27,7 @@ const Dashboard = () => {
 
   return (
     <div ref={filterRef} className='placeholder-glow'>
+
       <section className='homePage-backgroundColor'>
         <FilterMethods />
         <JobWorkSpace/>

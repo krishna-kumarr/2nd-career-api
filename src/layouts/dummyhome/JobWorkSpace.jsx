@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import JobDescription from "./JobDescription";
 import Logo from "../../assets/images/company.png";
 import { FaSave } from "react-icons/fa";
@@ -32,8 +32,6 @@ const JobWorkSpace = () => {
   }
 
 
-  console.log("object",applicationRequirements)
-
 
   return (
     <div className="container-fluid">
@@ -60,7 +58,7 @@ const JobWorkSpace = () => {
                     </div>
                     <div className="d-flex">
                       <div className="me-auto ms-5 p-2">
-                        <button className="btn btn-brand-color ms-3" data-testid="ApplyNow" data-bs-toggle="modal" data-bs-target="#ApplyJobModal" onClick={() => handleGetApplicationRequirements(selectedCardData[0].id)}>Apply Now</button>
+                        <button className="btn btn-brand-color ms-3" data-testid="ApplyNow" data-bs-toggle="modal" data-bs-target="#ApplyJobModal">Apply Now</button>
                       </div>
 
 
@@ -100,7 +98,7 @@ const JobWorkSpace = () => {
                 <div className="col-12 JobDescription-sticky-top-height bg-white rounded-4">
                   <div className="d-flex align-items-center my-2">
                     <div className="flex-shrink-0 ms-2">
-                      <img src={"..."} alt="..." width={52} height={52} className='placeholder rounded-circle' />
+                      <img src={Logo} alt="..." width={52} height={52} className='placeholder rounded-circle' />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <p className="job-posted-on placeholder rounded col-5 py-3"></p>

@@ -1,45 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DashboardNavbar from "../../components/Navbar/DashboardNavbar";
 import CardWithImage from "../../components/Cards/CardWithImage";
 import Image from '../../utils/images.js'
 import axios from 'axios';
+import CommonContext from "../../hooks/CommonContext.jsx";
 
 
 const CommunityPage = () => {
     const professionalPageDashboardMenu = ['Home', 'Learning', 'Community']
+    const communityCards = ["dummy"];
 
     const [communityData, setCommunityData] = useState([])
     const [modalApiContent, setModalApiContent] = useState([])
+    const {
+        gettingResponse,
+        setGettingResponse
+      } = useContext(CommonContext);
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6dHJ1ZSwiaWF0IjoxNzEyOTAxNjA1LCJqdGkiOiIyNDgxMDFjMS1jZDc4LTRmY2YtOGY1MC01NTEwMTIxNGQ5YTAiLCJ0eXBlIjoiYWNjZXNzIiwic3ViIjoic2l2YXBlcnNvbmFsMTIxMkBnbWFpbC5jb20iLCJuYmYiOjE3MTI5MDE2MDUsImNzcmYiOiIwMTQyNGEwYy0zMzBmLTRjZDItOWNiZi1iYzVlZWJiYWQ2YjgiLCJleHAiOjE3MTI5ODgwMDV9.A1zVfHFGv3txvswLR6SeReCWmI9ZxjtgbX4sDYwwzLk"
-
-    const getModalData = async () => {
-
-        try {
-            await axios.post("http://10.10.24.2:5002/get_detailed_description_learning", { id: 2 },
-                {
-                    headers: {
-                        authorization: `Bearer ${token}`
-                    }
-                }
-            ).then((response) => {
-                console.log(response.data)
-                console.log(response.data.data[0])
-                setModalApiContent(response.data.data[0].detailed_description)
-            })
-        } catch (err) {
-            console.log(err)
-        }
-
-    }
+    const token = localStorage.getItem("Token")
 
 
     useEffect(() => {
+        setGettingResponse(false);
         const getcommunityDatas = async () => {
             try {
                 await axios({
                     method: "post",
-                    url: "http://10.10.24.2:5002/professional_community",
+                    url: "http://secondcareers.adraproductstudio.com:5000/professional_community",
                     headers: {
                         authorization: `Bearer ${token}`
                     }
@@ -60,7 +47,31 @@ const CommunityPage = () => {
             }
         }
         (async () => getcommunityDatas())();
+
+        
     }, [])
+
+    
+    const getModalData = async () => {
+
+        try {
+            await axios.post("http://secondcareers.adraproductstudio.com:5000/get_detailed_description_learning", { id: 2 },
+                {
+                    headers: {
+                        authorization: `Bearer ${token}`
+                    }
+                }
+            ).then((response) => {
+                setGettingResponse(true);
+                console.log(response.data)
+                console.log(response.data.data[0])
+                setModalApiContent(response.data.data[0].detailed_description)
+            })
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
 
 
 
@@ -70,15 +81,15 @@ const CommunityPage = () => {
 
             <div className="community-page-height community-page-bg overflow-scroll">
                 <div className="container pt-5">
+                {gettingResponse ?
                     <div className="row row-cols-1 row-cols-md-3 g-4 mt-0 mb-4">
-
                             {communityData.map((value, index) => {
                                 return (
                                     <div className="col">
                                     <CardWithImage cardImage={"https://coworkingers.com/wp-content/uploads/2020/06/awfis-1.jpg"}
                                         cardTitle={value.title}
                                         cardTitleStyle="communityTitle"
-                                        imageClassName="rounded-4 community-img-height"
+                                        imageClassName="rounded-top community-img-height"
                                         cardText={value.short_description}
                                         cardKey={index}
                                         carTextClassName="role-selection-description"
@@ -92,14 +103,51 @@ const CommunityPage = () => {
                                         leftCommUrl={value.join_url}
                                         rightCommUrl={value.share_url}
                                     />
-                                    { modalApiContent.map((val,ind)=>{
+                                    {/* { modalApiContent.map((val,ind)=>{
                                         <CardWithImage key={ind} modalContent={val}/>
-                                    })}
+                                    })} */}
                                     </div>
                                 )
                             })}
 
-                    </div>
+                    </div> 
+                    :
+                    communityCards.map((v, i) => {
+                        return (
+                            <div className="col-12 col-md-6 col-lg-4">
+                          <div
+                            class="card border-0 p-0 rounded-3 overflow-hidden placeholder-glow"
+                            aria-hidden="true"
+                            key={i}
+                          >
+                            <div className="col-12">
+                              <span class="placeholder col-12 py-4 rounded-top"></span>
+                              <span class="placeholder col-12 py-4"></span>
+                              <span class="placeholder col-12 py-4"></span>
+                              <span class="placeholder col-12 py-4 rounded-bottom"></span>
+                            </div>
+                            <div class="card-body p-0">
+                              <div className="p-3 py-5">
+                                <h5 class="card-title ">
+                                  <span class="placeholder col-6 py-3 rounded-3"></span>
+                                </h5>
+                                <p class="card-text">
+                                  <span class="placeholder col-12 py-2 rounded "></span>
+                                  <span class="placeholder col-12 py-2 rounded"></span>
+                                  <span class="placeholder col-12 py-2 rounded"></span>
+                                  <span class="placeholder col-8 py-2 rounded"></span>
+                                </p>
+                              </div>
+                              <div class="card-footer d-flex justify-content-between">
+                                <button className="btn btn-outline-secondary placeholder col-5"></button>
+                                <button className="btn btn-outline-secondary placeholder col-5"></button>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                        );
+                        })
+                    }
                     {/* <div className="col">
                             <CardWithImage cardImage={"https://coworkingers.com/wp-content/uploads/2020/06/awfis-1.jpg"}
                                 cardTitle={title}

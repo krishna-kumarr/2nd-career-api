@@ -15,13 +15,14 @@ const JobCard = ({ cardId, cardDes, cardType, applicationStatus, cardHeading, ca
 
   const handleSelectedCardData = async (cardId) => {
     setSelectedCardData([])
+    setApplicationRequirements([])
     setSelectedSkeleton(true)
 
     const token = localStorage.getItem("Token")
 
     let jobId = { job_id: cardId }
     try {
-      await axios.post("http://10.10.24.7:5000/selected_job_details", jobId, {
+      await axios.post("http://secondcareers.adraproductstudio.com:5000/selected_job_details", jobId, {
         headers: {
           authorization: `Bearer ${token}`
         }

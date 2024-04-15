@@ -54,7 +54,7 @@ const LoginForm = () => {
       try {
         await axios({
           method: "post",
-          url: "http://10.10.24.2:5000/login",
+          url: "http://secondcareers.adraproductstudio.com:5000/login",
           auth: {
             username: LoginDetails.email_id,
             password: LoginDetails.password,
@@ -68,7 +68,7 @@ const LoginForm = () => {
               
               localStorage.setItem("Token",response.data.data.access_token)
               setSubmitLoading(false);
-              pageNavigate("/home/all");
+              pageNavigate("/home/al  l");
             }
           })
           .catch((error) => {

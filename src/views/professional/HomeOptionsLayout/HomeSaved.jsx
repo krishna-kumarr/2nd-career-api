@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import JobCard from '../../../layouts/dummyhome/JobCard'
 import CommonContext from '../../../hooks/CommonContext';
 import axios from "axios";
@@ -9,7 +9,7 @@ import Logo from '../../../assets/images/company.png'
 
 
 const HomeSaved = () => {
-
+    const [filter, setFilter] = useState("")
     const { handleGetApplicationRequirements, cardArrayDuplicate, setCardArrayDuplicate, cardArray, setCardArray, setSelectedCardData, gettingResponse, setGettingResponse } = useContext(CommonContext);
     const jobCards = ["dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy"]
 
@@ -24,7 +24,7 @@ const HomeSaved = () => {
             try {
                 await axios({
                     method: "post",
-                    url: "http://10.10.24.7:5000/professional_saved_jobs",
+                    url: "http://secondcareers.adraproductstudio.com:5000/professional_saved_jobs",
                     headers: {
                         authorization: `Bearer ${token}`
                     }
@@ -32,15 +32,18 @@ const HomeSaved = () => {
                     .then((res) => {
                         // console.log(res.data)
                         if (res.data.error_code === 0) {
-                            setCardArray(res.data.data)
-                            setCardArrayDuplicate(res.data.data)
                             if (res.data.data.length > 0) {
+                                console.log(res.data.data[0])
                                 setSelectedCardData([res.data.data[0]])
                                 handleGetApplicationRequirements(res.data.data[0].id)
+                                setCardArray(res.data.data)
+                            setCardArrayDuplicate(res.data.data)
                             }
                             else{
                                 setGettingResponse(true)
                             }
+                            
+                            
                         }
                     })
                     .catch((err) => console.log(err))
@@ -52,7 +55,39 @@ const HomeSaved = () => {
         (async () => getHomeDatas())();
     }, [])
 
-
+    const handleSortingFilter = (sortValue) => {
+        setFilter(sortValue)
+        switch (sortValue) {
+            case "DateLatest":
+                var sorting = cardArray.sort(function (a, b) {
+                    let d1 = new Date(a.created_at),
+                        d2 = new Date(b.created_at)
+                    if (d1 < d2) {
+                        return -1;
+                    }
+                })
+                setCardArrayDuplicate(sorting)
+                break;
+            case "NameAscending":
+                var sorting = cardArray.sort(function (a, b) {
+                    if (a.job_title.toLowerCase() < b.job_title.toLowerCase()) {
+                        return -1;
+                    }
+                })
+                setCardArrayDuplicate(sorting)
+                break;
+            case "NameDescending":
+                var sorting = cardArray.sort(function (a, b) {
+                    if (b.job_title.toLowerCase() < a.job_title.toLowerCase()) {
+                        return -1;
+                    }
+                })
+                setCardArrayDuplicate(sorting)
+                break;
+            default:
+                break;
+        }
+    }
 
     return (
         <>
@@ -66,17 +101,23 @@ const HomeSaved = () => {
                         }
 
                     </div>
-                    <div className="col">
+                    <div className="col dropdown custom-dropdown">
                         {
-                            gettingResponse === false ?
-                                <label className="filter-results placeholder rounded col-12 py-3"></label>
+                            gettingResponse === false ? <label className=" w-100">
+                                <span className="placeholder w-100 rounded py-2 pt-3"></span>
+                            </label>
                                 :
-                                <select className="form-select border-0 outline-none filter-section" aria-label="Default select example">
-                                    <option>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
+                                <>
+                                    <button className="btn btn-secondary dropdown-toggle w-100 border-0 outline-none filter-section" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        {filter === "" ? "Filter" : filter}
+                                    </button>
+                                    <ul className="dropdown-menu col" >
+                                        <li onClick={() => handleSortingFilter("DateLatest")}><a className="dropdown-item" >Sort by Date Latest</a></li>
+                                        <li onClick={() => handleSortingFilter("NameAscending")}><a className="dropdown-item" >Sort by Ascending(A-Z) </a></li>
+                                        <li onClick={() => handleSortingFilter("NameDescending")}><a className="dropdown-item" >Sort by Descending(Z-A) </a></li>
+                                    </ul>
+                                </>
                         }
                     </div>
                 </div>

@@ -8,25 +8,26 @@ import Logo from '../../../assets/images/company.png'
 const HomeAll = () => {
     const [filter, setFilter] = useState("")
     const jobCards = ["dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy", "dummy"]
-    const { handleGetApplicationRequirements, cardArray, setCardArray, setFilterArray, setUserNavinfo, setSelectedCardData, gettingResponse, setGettingResponse, cardArrayDuplicate, setCardArrayDuplicate } = useContext(CommonContext);
+    const { setApplicationRequirements,handleGetApplicationRequirements, cardArray, setCardArray, setFilterArray, setUserNavinfo, setSelectedCardData, gettingResponse, setGettingResponse, cardArrayDuplicate, setCardArrayDuplicate } = useContext(CommonContext);
 
     useEffect(() => {
         setGettingResponse(false)
         setCardArray([])
         setCardArrayDuplicate([])
         setSelectedCardData([])
+        setApplicationRequirements([])
 
         const getHomeDatas = async () => {
             const token = localStorage.getItem("Token")
             try {
-                await axios.get("http://10.10.24.7:5000/professional_dashboard", {
+                await axios.get("http://secondcareers.adraproductstudio.com:5000/professional_dashboard", {
                     headers: {
                         authorization: `Bearer ${token}`
                     }
                 }
                 )
                     .then((res) => {
-                        // console.log(res.data)
+                        console.log(res.data)
                         if (res.data.error_code === 0) {
                             setFilterArray(res.data.data)
                             if (res.data.data.job_details !== undefined) {
@@ -135,7 +136,7 @@ const HomeAll = () => {
                             <div className="card-body ">
                                 <div className="d-flex align-items-center my-2">
                                     <div className="flex-shrink-0">
-                                        <img src={"..."} width={52} height={52} className='placeholder rounded-circle' />
+                                        <img src={Logo} width={52} height={52} className='placeholder rounded-circle ' />
                                     </div>
                                     <div className="flex-grow-1 ms-3">
                                         <p className='job-card-posted-time placeholder col-5 rounded py-3'></p>

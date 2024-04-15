@@ -186,6 +186,7 @@ const ProfessionalSocialMediaForm = () => {
             I agree to all the <a href="#">Terms</a> and
             <a href="#"> Privacy policy</a>
           </label>
+          
           {/* <div className="text-danger signup-error-message">You must agree before submitting.</div> */}
         </div>
       </div>

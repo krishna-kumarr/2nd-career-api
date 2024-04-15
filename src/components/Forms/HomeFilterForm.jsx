@@ -17,9 +17,9 @@ const HomeFilterForm = () => {
 
 
     const object = {
-        skill_name: skills,
-        sector_name: sectors,
-        specialisation_name: specialization,
+        skill: skills,
+        sector: sectors,
+        specialisation: specialization,
         workplace_type: workplaceType,
         city: location,
         job_type: jobTypee,
@@ -94,7 +94,7 @@ const HomeFilterForm = () => {
 
 
             {
-                FilterArray.skill_name !== undefined ?
+                FilterArray.skill !== undefined ?
                     <div className="mb-3 dropdown custom-dropdown">
                         <FilterLabel spanContent={"Skills"} spanClassName={"job-filter-sub-headings"} labelHtmlFor={"skills"} lableClassName={"form-label fs-4 mb-2"} />
                         <button className="btn btn-secondary dropdown-toggle w-100" type="button"
@@ -103,8 +103,8 @@ const HomeFilterForm = () => {
                         </button>
                         <ul className="dropdown-menu" >
                             {
-                                FilterArray.skill_name.length !== 0 ? <>
-                                    {FilterArray.skill_name.map((value, index) => {
+                                FilterArray.skill.length !== 0 ? <>
+                                    {FilterArray.skill.map((value, index) => {
                                         return <li onClick={() => setSkills(value)} key={index}><a className="dropdown-item" >{value}</a></li>
                                     })}
                                 </>
@@ -119,7 +119,7 @@ const HomeFilterForm = () => {
 
 
             {
-                FilterArray.sector_name !== undefined ?
+                FilterArray.sector !== undefined ?
                     <div className="mb-3 dropdown custom-dropdown">
                         <FilterLabel spanContent={"Sectors"} spanClassName={"job-filter-sub-headings"} labelHtmlFor={"selectors"} lableClassName={"form-label fs-4 mb-2"} />
                         <button className="btn btn-secondary dropdown-toggle w-100" type="button"
@@ -128,8 +128,8 @@ const HomeFilterForm = () => {
                         </button>
                         <ul className="dropdown-menu" >
                             {
-                                FilterArray.sector_name.length !== 0 ? <>
-                                    {FilterArray.sector_name.map((value, index) => {
+                                FilterArray.sector.length !== 0 ? <>
+                                    {FilterArray.sector.map((value, index) => {
                                         return <li onClick={() => setSectors(value)} key={index}><a className="dropdown-item" >{value}</a></li>
                                     })}
                                 </>
@@ -144,7 +144,7 @@ const HomeFilterForm = () => {
 
 
             {
-                FilterArray.specialisation_name !== undefined ?
+                FilterArray.specialisation !== undefined ?
                     <div className="mb-3 dropdown custom-dropdown">
                         <FilterLabel spanContent={"Specialization"} spanClassName={"job-filter-sub-headings"} labelHtmlFor={"Specialization"} lableClassName={"form-label fs-4 mb-2"} />
                         <button className="btn btn-secondary dropdown-toggle w-100" type="button"
@@ -153,8 +153,8 @@ const HomeFilterForm = () => {
                         </button>
                         <ul className="dropdown-menu" >
                             {
-                                FilterArray.specialisation_name.length !== 0 ? <>
-                                    {FilterArray.specialisation_name.map((value, index) => {
+                                FilterArray.specialisation.length !== 0 ? <>
+                                    {FilterArray.specialisation.map((value, index) => {
                                         return <li onClick={() => setSpecialization(value)} key={index}><a className="dropdown-item" >{value}</a></li>
                                     })}
                                 </>

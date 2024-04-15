@@ -97,7 +97,7 @@ const CardWithImage = ({
 
   return (
 
-    <div className="card h-100 shadow mb-5 bg-body rounded-4 border-0" key={cardKey}>
+    <div className="card h-100 shadow mb-5 bg-body rounded-4 border-0 overflow-hidden" key={cardKey}>
 
       <img src={cardImage} className={imageClassName} alt="Card Image" data-testid='imgTesting' width={width} height={height} />
       <div className="card-body" >

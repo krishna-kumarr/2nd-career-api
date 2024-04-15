@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 
 
@@ -14,14 +14,15 @@ export const DataProvider = ({ children }) => {
     const [selectedCardData, setSelectedCardData] = useState([]);
     const [selectedSkeleton, setSelectedSkeleton] = useState(false);
     const [applicationRequirements, setApplicationRequirements] = useState([]);
+ 
 
     const handleGetApplicationRequirements = async (value) => {
         console.log(value)
-
+        setApplicationRequirements([])
         let getRequirements = { job_id: value }
         const token = localStorage.getItem("Token")
         try {
-          await axios.post("http://10.10.24.7:5000/professional_onClick_apply_job", getRequirements, {
+          await axios.post("http://secondcareers.adraproductstudio.com:5000/professional_onClick_apply_job", getRequirements, {
             headers: {
               authorization: `Bearer ${token}`
             }
@@ -29,7 +30,7 @@ export const DataProvider = ({ children }) => {
             .then((res) => {
               // console.log(res.data)
               if(res.data.error_code === 0){
-                console.log(res.data.data)
+                // console.log(res.data.data)
                 setApplicationRequirements(res.data.data)
                 setGettingResponse(true)
                 setSelectedSkeleton(false)
